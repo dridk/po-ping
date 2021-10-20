@@ -1,0 +1,17 @@
+
+
+GET problems
+GET problems/1
+
+POST solve/{problem_id} 
+{
+	user:"dridk"
+	success: True
+	timeout: 32
+	score: 4
+	answer: code 
+}
+
+
+
+
