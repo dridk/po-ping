@@ -16,14 +16,14 @@
           @click.stop="drawerOpen = !drawerOpen"
         />
 
-        Panda Oneliner
+        <v-btn href="/" text>
+          <span class="mr-2">Panda onliner</span>
+        </v-btn>
       </div>
 
       <v-spacer></v-spacer>
 
       <v-btn
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
         text
       >
         <v-icon left>fas fa-user-circle</v-icon>

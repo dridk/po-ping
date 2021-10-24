@@ -4,6 +4,7 @@ import Home from "./views/Home.vue";
 import E404 from "./views/E404.vue";
 import About from "./views/About.vue";
 import Login from "./views/User/Login.vue";
+import Profile from "./views/User/Profile.vue"
 
 Vue.use(VueRouter);
 
@@ -14,6 +15,10 @@ export const router = new VueRouter({
         {
             path: "/",
             component: Home,
+        },
+        {
+            path: "/profile/:username",
+            component: Profile,
         },
         {
             path: "/login",
