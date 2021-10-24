@@ -127,3 +127,12 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+
+
+#
+# front node/vue 
+#
+front/node_modules/
+front/dist
+.vscode
