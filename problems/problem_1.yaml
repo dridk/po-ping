@@ -2,9 +2,23 @@ name: show first lines
 level: 3 
 author: dridk
 description: Display only the first 2 lines 
-input: |
-  {"name":{"0":"boby","1":"sacha","2":"truc"},"age":{"0":324,"1":34,"2":342}}
+tags: 
+  - groupby
+  - test 
 
-answer: |
-  df.head(2)
+hint: Use groupby 
+level: 1 
+
+pre-exercise-code: |
+  import pandas as pd
+  df = pd.DataFrame({"name":{"0":"boby","1":"sacha","2":"truc"},"age":{"0":324,"1":34,"2":342}})
+
+
+sample-code: |
+  # Fill the dataframe 
+  result = ...
+
+solution: |
+  a = 10
+  result = df.head(2)
 

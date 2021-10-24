@@ -1,17 +1,27 @@
 
+http :GET problems 
+http :GET problems/324
+http :POST problems/324 user = dridk  success=True solution=truc 
 
-GET problems
-GET problems/1
+http :GET login/dridk
 
-POST solve/{problem_id} 
+Problem
 {
-	user:"dridk"
-	success: True
-	timeout: 32
-	score: 4
-	answer: code 
+	id: 3244
+	name: "Create a groupby truc"
+	description: "Fait ceci avec cela"
+	author: dridk
+	tags: "groupby, truc"
+	hint: "Use groupby"
+	difficulity: "hard"
+	pass : True 
+	success_counter : 24242
+	failure_counter: 224
+
+	pre-exercise : """ import pandas as pd ;"""
+	sample-code : """ results ... """ 
+	solution: """ truc ... """
+
+
+
 }
-
-
-
-

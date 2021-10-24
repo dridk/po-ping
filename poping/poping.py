@@ -17,14 +17,40 @@ class Problem:
             self.description = data.get("description")
             self.level = data.get("level", 1)
             self.author = data.get("author", "unknown")
-            self.input_json = data.get("input", {})
-            self.answer = data.get("answer", "")
-            self.input_df = pd.read_json(self.input_json)
+            self.tags = data.get("tags", [])
+            self.hint = data.get("hint", "No hint")
 
-    @property
-    def output_df(self):
-        """Return predicted output from the answser"""
-        return eval(self.answer, {"df": self.input_df})
+            self.pre_exercice_code = data.get("pre-exercise-code")
+            self.sample_code = data.get("sample-code")
+            self.solution = data.get("solution")
+
+    def get_input_df(self):
+        """extract df values from pre_exercice_code"""
+
+        context = {}
+        exec(self.pre_exercice_code, context)
+        if "df" not in context:
+            raise Exception("pre-exercice-code doesn't define a df variable")
+
+        if type(context["df"]) is not pd.DataFrame:
+            raise Exception("df must be a dataframe")
+
+        return context["df"]
+
+    def get_output_result(self):
+        """extract result value from solution"""
+
+        context = {}
+        exec(self.pre_exercice_code, context)
+        exec(self.solution, context)
+
+        if "result" not in context:
+            raise Exception("solution doesn't define a result variable")
+
+        if type(context["result"]) is not pd.DataFrame:
+            raise Exception("results must be a dataframe")
+
+        return context["result"]
 
     def save(self, filename: str):
         """save problem"""
@@ -32,80 +58,79 @@ class Problem:
         # TODO
         pass
 
-    def to_html(self):
-        """generate data camp html snippet
-        @see https://github.com/datacamp/datacamp-light
-        """
+    # def to_html(self):
+    #     """generate data camp html snippet
+    #     @see https://github.com/datacamp/datacamp-light
+    #     """
 
-        input_str = str(self.input_df.to_dict())
+    #     input_str = str(self.input_df.to_dict())
 
-        html = f"""
-        <div data-datacamp-exercise data-show-run-button data-lang="python">
-          <code data-type="pre-exercise-code">
-            
-            import pandas as pd 
-            df = pd.DataFrame({input_str})
+    #     html = f"""
+    #     <div data-datacamp-exercise data-show-run-button data-lang="python">
+    #       <code data-type="pre-exercise-code">
 
-          </code>
-          <code data-type="sample-code">
-            # {self.description}
+    #         import pandas as pd
+    #         df = pd.DataFrame({input_str})
 
-            result = ...
+    #       </code>
+    #       <code data-type="sample-code">
+    #         # {self.description}
 
-          </code>
-          <code data-type="solution">
-            # Create a variable a, equal to 5
-            
-            result = {self.answer}
+    #         result = ...
 
-          </code>
-          <code data-type="sct">
-            test_object("result")          
-            success_msg("Great job!")
-          </code>
-          <div data-type="hint">
-            TODO : create hint
-          </div>
-        </div>
+    #       </code>
+    #       <code data-type="solution">
+    #         # Create a variable a, equal to 5
 
-        """
+    #         result = {self.answer}
 
-        return html
+    #       </code>
+    #       <code data-type="sct">
+    #         test_object("result")
+    #         success_msg("Great job!")
+    #       </code>
+    #       <div data-type="hint">
+    #         TODO : create hint
+    #       </div>
+    #     </div>
 
-    def _to_static_page(self, filename: str):
-        """for testing purpose : generate a html page"""
+    #     """
 
-        html = f"""
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>Document</title>
-         
+    #     return html
 
+    # def _to_static_page(self, filename: str):
+    #     """for testing purpose : generate a html page"""
 
-            <script type="text/javascript" src="https://cdn.datacamp.com/dcl-react-prod/dcl-react.js.gz"></script>
-        </head>
-        <body>
+    #     html = f"""
+    #     <!DOCTYPE html>
+    #     <html lang="en">
+    #     <head>
+    #         <meta charset="UTF-8">
+    #         <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    #         <title>Document</title>
 
-        {self.to_html()}
+    #         <script type="text/javascript" src="https://cdn.datacamp.com/dcl-react-prod/dcl-react.js.gz"></script>
+    #     </head>
+    #     <body>
 
-        </body>
-        </html>
+    #     {self.to_html()}
 
+    #     </body>
+    #     </html>
 
-        """
+    #     """
 
-        with open(filename, "w") as file:
-            file.write(html)
+    #     with open(filename, "w") as file:
+    #         file.write(html)
 
 
 if __name__ == "__main__":
 
+    print("hello")
     p = Problem("problems/problem_1.yaml")
 
-    print(p.input_df)
-    print(p.output_df)
+    df = p.get_input_df()
 
-    p._to_static_page("problem_1.html")
+    df = p.get_output_result()
+
+    print(df)
